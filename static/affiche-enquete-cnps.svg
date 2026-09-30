@@ -1,27 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 1600" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1600" role="img" aria-labelledby="title description">
   <title id="title">Affiche QR code — Enquête de satisfaction CNPS</title>
   <desc id="description">Scannez le QR code pour répondre à l’enquête de satisfaction de la cérémonie IM2S.</desc>
-  <rect width="1000" height="1400" fill="#fff"/>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#102f48" flood-opacity=".15"/>
+    </filter>
+  </defs>
 
-  <image href="/static/cnps-logo.svg" x="425" y="42" width="150" height="206" preserveAspectRatio="xMidYMid meet"/>
+  <rect width="1000" height="1600" fill="#f1f5f2"/>
+  <path d="M0 0h1000v600L0 705z" fill="#102f48"/>
+  <path d="M0 640 1000 535v68L0 710z" fill="#1b5265"/>
+  <circle cx="875" cy="80" r="210" fill="#1b5265" opacity=".45"/>
+  <circle cx="920" cy="90" r="145" fill="none" stroke="#b8d8c9" stroke-width="2" opacity=".45"/>
 
-  <text x="105" y="360" fill="#c4a16b" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700">AVEZ-VOUS</text>
-  <text x="105" y="440" fill="#c4a16b" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700">ÉTÉ SATISFAIT·E</text>
-  <text x="820" y="455" fill="#c4a16b" font-family="Arial, Helvetica, sans-serif" font-size="190" font-weight="700">?</text>
+  <rect x="72" y="54" width="112" height="151" rx="5" fill="#fff"/>
+  <image href="/static/cnps-logo.svg" x="76" y="58" width="104" height="143" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="690" y="92" width="230" height="48" rx="4" fill="#b8d8c9"/>
+  <text x="805" y="122" fill="#102f48" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">CÉRÉMONIE IM2S</text>
 
-  <path d="M180 495h640v188H180l32 77-93-77 61-188z" fill="#c4a16b"/>
-  <text x="500" y="552" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" text-anchor="middle">SCANNEZ-MOI</text>
-  <text x="500" y="596" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" text-anchor="middle">POUR PARTAGER</text>
-  <text x="500" y="640" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" text-anchor="middle">VOTRE EXPÉRIENCE</text>
+  <text x="78" y="302" fill="#b8d8c9" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" letter-spacing="2">VOTRE AVIS COMPTE</text>
+  <text x="76" y="398" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="73" font-weight="700">AVEZ-VOUS ÉTÉ</text>
+  <text x="76" y="488" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="73" font-weight="700">SATISFAIT·E ?</text>
+  <rect x="80" y="526" width="104" height="8" rx="4" fill="#e57935"/>
+  <text x="78" y="577" fill="#e5efeb" font-family="Arial, Helvetica, sans-serif" font-size="25">Partagez votre expérience en quelques minutes.</text>
 
-  <rect x="145" y="720" width="710" height="710" fill="#fff" stroke="#d9dfdf" stroke-width="4"/>
-  <svg x="165" y="740" width="670" height="670" viewBox="150 265 700 700" preserveAspectRatio="xMidYMid meet">
-    <image href="/static/qr-enquete-cnps.png" x="0" y="0" width="1000" height="1160"/>
+  <rect x="100" y="640" width="800" height="820" rx="14" fill="#fff" filter="url(#shadow)"/>
+  <text x="500" y="704" fill="#102f48" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="middle">SCANNEZ POUR RÉPONDRE</text>
+  <rect x="164" y="724" width="672" height="672" rx="10" fill="#fff" stroke="#d9e3df" stroke-width="2"/>
+  <svg x="180" y="740" width="640" height="640" viewBox="0 0 700 700" preserveAspectRatio="xMidYMid meet">
+    <image href="/static/qr-enquete-cnps.png" x="-150" y="-265" width="1000" height="1160"/>
   </svg>
+  <rect x="222" y="1408" width="556" height="4" rx="2" fill="#b8d8c9"/>
+  <text x="500" y="1440" fill="#1b5265" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700" text-anchor="middle">OUVREZ L’APPAREIL PHOTO DE VOTRE TÉLÉPHONE</text>
 
-  <rect y="1470" width="250" height="18" fill="#24549a"/>
-  <rect x="250" y="1470" width="250" height="18" fill="#e88900"/>
-  <rect x="500" y="1470" width="250" height="18" fill="#008d49"/>
-  <rect x="750" y="1470" width="250" height="18" fill="#ffdc00"/>
-  <text x="500" y="1540" fill="#52636e" font-family="Arial, Helvetica, sans-serif" font-size="24" text-anchor="middle">LA CNPS, MAINTENANT C’EST POUR TOUT LE MONDE</text>
+  <rect y="1530" width="250" height="18" fill="#19488b"/>
+  <rect x="250" y="1530" width="250" height="18" fill="#f28a00"/>
+  <rect x="500" y="1530" width="250" height="18" fill="#008d49"/>
+  <rect x="750" y="1530" width="250" height="18" fill="#ffdf00"/>
+  <text x="500" y="1580" fill="#52636e" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle">IM2S · CATALOGUE DE FORMATION 2027</text>
 </svg>
