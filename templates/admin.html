@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+.wrap.big{max-width:1100px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:#fff;border-radius:14px;box-shadow:0 8px 28px rgba(11,42,74,.12);padding:18px}
+.kpi small{color:var(--mute);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.kpi b{display:block;font-size:32px;color:var(--navy);margin-top:4px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:18px}
+.card h2{margin:0 0 14px;font-size:16px;color:var(--navy)}
+.bar{display:grid;grid-template-columns:minmax(120px,42%) 1fr 70px;gap:8px;align-items:center;font-size:13px;margin:7px 0}
+.bar .t{background:var(--bg);border-radius:6px;height:14px;overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--orange)}
+.bar .t i.n{background:var(--navy2)}
+.bar em{font-style:normal;color:var(--mute);text-align:right}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.top select{padding:9px;border-radius:8px;border:1.5px solid var(--line);font:inherit}
+.cm{max-height:320px;overflow:auto}.cm p{margin:0;padding:8px 0;border-top:1px solid var(--line);font-size:14px}.cm small{color:var(--mute);margin-right:6px}
+table.s{width:100%;border-collapse:collapse;font-size:13px}.s td,.s th{padding:7px;border-top:1px solid var(--line);text-align:left}
+</style>
+{% endblock %}
+{% macro bars(items, cls='') %}
+{% for d in items %}<div class="bar"><span>{{ d.label }}</span><div class="t"><i class="{{ cls }}" style="width:{{ d.pct }}%"></i></div><em>{{ d.n }} · {{ d.pct }}%</em></div>{% endfor %}
+{% endmacro %}
+{% macro means(items) %}
+{% for d in items %}<div class="bar" style="grid-template-columns:minmax(150px,46%) 1fr 90px"><span>{{ d.label }}</span><div class="t"><i class="n" style="width:{{ d.pct }}%"></i></div><em>{{ d.mean if d.mean else '—' }}/4{% if d.sat is not none %} · {{ d.sat }}%{% endif %}</em></div>{% endfor %}
+{% endmacro %}
+{% block body %}
+<div class="hero"><div class="in">
+  <img class="cnps-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="Logo de la CNPS">
+  <div class="top"><div><span class="badge">Tableau de bord</span><h1>Cérémonie IM2S — Catalogue 2027</h1><p>Résultats de l’enquête de satisfaction</p></div>
+  <a class="btn" href="{{ url_for('export', cle=key) }}">Exporter en CSV</a></div>
+</div></div>
+<div class="wrap big">
+<div class="card top"><b>{{ total }} réponse(s)</b>
+  <form method="get"><input type="hidden" name="cle" value="{{ key }}">
+    <select name="mode" onchange="this.form.submit()"><option value="">Tous les modes de participation</option>
+    {% for m in modes %}<option value="{{ m }}" {{ 'selected' if m == flt }}>{{ m }}</option>{% endfor %}</select></form></div>
+
+<div class="grid">
+  <div class="kpi"><small>Satisfaction (CSAT)</small><b>{{ csat ~ ' %' if csat is not none else '—' }}</b></div>
+  <div class="kpi"><small>Score NPS</small><b>{{ nps if nps is not none else '—' }}</b></div>
+  <div class="kpi"><small>Comptent programmer en 2027</small><b>{{ prog_pct ~ ' %' if prog_pct is not none else '—' }}</b></div>
+  <div class="kpi"><small>FDFP suite à la cérémonie</small><b>{{ fdfp_pct ~ ' %' if fdfp_pct is not none else '—' }}</b></div>
+</div>
+
+<div class="g2">
+<div class="card"><h2>Satisfaction globale (CSAT)</h2>{{ bars(csat_dist) }}</div>
+<div class="card"><h2>Recommandation (NPS)</h2>{{ bars(nps_dist) }}
+  <p class="hint">Promoteurs (9-10) : {{ nps_parts.promo }} · Passifs (7-8) : {{ nps_parts.passif }} · Détracteurs (0-6) : {{ nps_parts.detr }}</p></div>
+<div class="card"><h2>Séquences de la cérémonie <small>(moyenne /4 · % satisfaits)</small></h2>{{ means(seq) }}</div>
+<div class="card"><h2>Organisation et logistique</h2>{{ means(logi) }}</div>
+<div class="card"><h2>Contenu et catalogue (accord)</h2>{{ means(aff) }}</div>
+<div class="card"><h2>Intentions</h2><b style="font-size:13px">Programmer des formations en 2027</b>{{ bars(prog) }}<b style="font-size:13px">Plan de formation FDFP 2027</b>{{ bars(fdfp) }}</div>
+<div class="card"><h2>Profil des participants</h2>{{ bars(roles, 'n') }}</div>
+<div class="card"><h2>Mode, canal et sexe</h2>{{ bars(modes_d) }}<hr style="border:0;border-top:1px solid var(--line)">{{ bars(canaux, 'n') }}<hr style="border:0;border-top:1px solid var(--line)">{{ bars(sexes) }}
+  <table class="s"><tr><th>Sexe</th><th>Réponses</th><th>CSAT</th><th>NPS</th></tr>
+  {% for s in by_sex %}<tr><td>{{ s.label }}</td><td>{{ s.n }}</td><td>{{ s.csat ~ ' %' if s.csat is not none else '—' }}</td><td>{{ s.nps if s.nps is not none else '—' }}</td></tr>{% endfor %}</table></div>
+</div>
+
+<div class="g2" style="margin-top:18px">
+{% for k, items in comments.items() %}
+<div class="card"><h2>{{ titles[k] }}</h2><div class="cm">
+  {% for d, t in items %}<p><small>{{ d }}</small>{{ t }}</p>{% else %}<p class="hint">Aucun commentaire.</p>{% endfor %}</div></div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

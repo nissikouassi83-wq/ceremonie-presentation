@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="hero"><div class="in">
+  <img class="cnps-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="Logo de la CNPS">
+  <span class="badge">Terminé</span>
+  <h1>Merci pour votre participation !</h1>
+  <p>Vos réponses ont bien été enregistrées.</p>
+</div></div>
+<div class="wrap"><div class="card" style="text-align:center">
+  <p style="font-size:18px">Votre avis nous aide à améliorer nos prochains événements et le Catalogue de formation 2027.</p>
+  <p class="hint">À très bientôt au Centre de Perfectionnement IM2S.</p>
+</div></div>
+{% endblock %}

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: enquete-ceremonie-im2s
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: ADMIN_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="hero"><div class="in">
+  <img class="cnps-logo" src="{{ url_for('static', filename='cnps-logo.svg') }}" alt="Logo de la CNPS">
+  <span class="badge">Étape {{ n }} / {{ total }}</span>
+  <h1>{{ step.title }}</h1>
+  <p>Enquête de satisfaction · Cérémonie IM2S 2027</p>
+  <div class="progress"><span style="width:{{ (n / total * 100)|round }}%"></span></div>
+</div></div>
+<div class="wrap">
+<form class="card" method="post" novalidate>
+{% if errors %}<p class="err">Merci de répondre aux questions signalées en rouge.</p>{% endif %}
+{% for q in step.questions %}
+<div class="q">
+  <h3><b>{{ q.num }}-</b>{{ q.label }}</h3>
+  {% if q.hint %}<p class="hint">{{ q.hint }}</p>{% endif %}
+
+  {% if q.kind == 'radio' %}
+    <div class="opts">
+    {% for o in q.options %}
+      <label class="opt"><input type="radio" name="{{ q.id }}" value="{{ o }}" {{ 'checked' if a.get(q.id) == o }}><span>{{ o }}{{ ' (préciser)' if o == 'Autre' }}</span></label>
+    {% endfor %}
+    </div>
+    {% if q.other %}<input class="autre" type="text" name="{{ q.id }}_autre" maxlength="200" placeholder="Si « Autre », précisez ici" value="{{ a.get(q.id ~ '_autre', '') }}">{% endif %}
+    {% if q.id in errors %}<div class="err">Réponse obligatoire.</div>{% endif %}
+
+  {% elif q.kind == 'matrix' %}
+    <div class="mx"><table>
+      <tr><th></th>{% for c in q.cols %}<th>{{ c }}</th>{% endfor %}</tr>
+      {% for key, label, opts, optional in q.rows %}
+      <tr class="{{ 'bad' if key in errors }}"><td>{{ label }}</td>
+        {% for o in opts %}<td><input type="radio" name="{{ key }}" value="{{ o }}" aria-label="{{ o }}" {{ 'checked' if a.get(key) == o }}></td>{% endfor %}
+      </tr>
+      {% endfor %}
+    </table></div>
+    {% if errors and q.rows|selectattr(0, 'in', errors)|list %}<div class="err">Une réponse est attendue sur chaque ligne en rouge.</div>{% endif %}
+
+  {% elif q.kind == 'nps' %}
+    <div class="nps">
+    {% for i in range(11) %}
+      <label class="pill"><input type="radio" name="{{ q.id }}" value="{{ i }}" {{ 'checked' if a.get(q.id) == i|string }}><span>{{ i }}</span></label>
+    {% endfor %}
+    </div>
+    <div class="nps-l"><span>0 = Pas du tout probable</span><span>10 = Tout à fait probable</span></div>
+    {% if q.id in errors %}<div class="err">Réponse obligatoire.</div>{% endif %}
+
+  {% elif q.kind == 'text' %}
+    <textarea name="{{ q.id }}" maxlength="1000" placeholder="Votre réponse (facultatif)">{{ a.get(q.id, '') }}</textarea>
+  {% endif %}
+</div>
+{% endfor %}
+<div class="nav">
+  {% if n > 1 %}<a class="btn ghost" href="{{ url_for('etape', n=n-1) }}">← Précédent</a>{% else %}<span></span>{% endif %}
+  <button class="btn" type="submit">{{ 'Envoyer mes réponses' if n == total else 'Suivant →' }}</button>
+</div>
+</form></div>
+<div class="foot">Vos données sont traitées conformément à la loi n°2013-450 · dpo@cnps.ci</div>
+{% endblock %}
