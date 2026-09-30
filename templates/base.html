@@ -10,7 +10,9 @@
 html{min-width:320px;scroll-behavior:smooth}
 body{margin:0;font-family:"Segoe UI",Tahoma,sans-serif;background:radial-gradient(ellipse at 8% 38%,rgba(184,216,201,.26),transparent 34%),var(--bg);color:var(--ink);line-height:1.6}
 .hero{position:relative;isolation:isolate;overflow:hidden;background-color:var(--navy);background-image:radial-gradient(rgba(255,255,255,.1) .8px,transparent .8px),linear-gradient(115deg,#102f48 0%,#17475a 72%,#286658 100%);background-size:18px 18px,cover;color:#fff;padding:34px 24px 96px;clip-path:polygon(0 0,100% 0,100% 83%,0 100%)}
-.hero .in{max-width:900px;margin:0 auto;padding-left:112px;position:relative}
+.hero:after{content:"IM2S";position:absolute;z-index:0;right:max(4vw,calc((100vw - 1100px)/2));top:24px;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.16);font-family:Georgia,"Palatino Linotype",serif;font-size:180px;font-weight:700;line-height:1;pointer-events:none;animation:im2s-drift 12s ease-in-out infinite alternate}
+@keyframes im2s-drift{from{transform:translate3d(0,0,0) rotate(-7deg);opacity:.45}to{transform:translate3d(-24px,15px,0) rotate(-2deg);opacity:1}}
+.hero .in{max-width:900px;margin:0 auto;padding-left:112px;position:relative;z-index:1}
 .cnps-logo{position:absolute;top:0;left:0;width:86px;height:auto;background:#fff;border-radius:3px;padding:4px;box-shadow:0 4px 16px rgba(0,0,0,.14)}
 .hero .in>.badge{display:table;margin-left:auto}
 .badge{display:inline-block;background:var(--mint);color:var(--navy);font-size:11px;font-weight:800;text-transform:uppercase;padding:5px 11px;border-radius:3px}
@@ -60,6 +62,7 @@ textarea{width:100%;min-height:100px;padding:11px 13px;border:1px solid var(--li
 	.hero{padding:25px 18px 78px;clip-path:polygon(0 0,100% 0,100% 91%,0 100%)}
 	.hero .in{padding:72px 0 0}
 	.cnps-logo{width:56px}
+	.hero:after{right:-12px;top:45px;font-size:76px;-webkit-text-stroke-color:rgba(255,255,255,.13)}
 	.hero h1{font-size:27px;max-width:600px}
 	.wrap{margin-top:-43px;padding:0 12px}
 	.card{padding:20px 17px}
@@ -68,7 +71,7 @@ textarea{width:100%;min-height:100px;padding:11px 13px;border:1px solid var(--li
 	.nps{gap:5px}.pill span{width:38px;height:40px}
 	.nps-l{font-size:11px}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 {% block head %}{% endblock %}
 </head>
