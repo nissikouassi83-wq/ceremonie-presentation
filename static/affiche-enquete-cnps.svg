@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1000 1600" role="img" aria-labelledby="title description">
+  <title id="title">Affiche QR code — Enquête de satisfaction CNPS</title>
+  <desc id="description">Scannez le QR code pour répondre à l’enquête de satisfaction de la cérémonie IM2S.</desc>
+  <rect width="1000" height="1400" fill="#fff"/>
+
+  <image href="/static/cnps-logo.svg" x="425" y="42" width="150" height="206" preserveAspectRatio="xMidYMid meet"/>
+
+  <text x="105" y="360" fill="#c4a16b" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700">AVEZ-VOUS</text>
+  <text x="105" y="440" fill="#c4a16b" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700">ÉTÉ SATISFAIT·E</text>
+  <text x="820" y="455" fill="#c4a16b" font-family="Arial, Helvetica, sans-serif" font-size="190" font-weight="700">?</text>
+
+  <path d="M180 495h640v188H180l32 77-93-77 61-188z" fill="#c4a16b"/>
+  <text x="500" y="552" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" text-anchor="middle">SCANNEZ-MOI</text>
+  <text x="500" y="596" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" text-anchor="middle">POUR PARTAGER</text>
+  <text x="500" y="640" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" text-anchor="middle">VOTRE EXPÉRIENCE</text>
+
+  <rect x="145" y="720" width="710" height="710" fill="#fff" stroke="#d9dfdf" stroke-width="4"/>
+  <svg x="165" y="740" width="670" height="670" viewBox="150 265 700 700" preserveAspectRatio="xMidYMid meet">
+    <image href="/static/qr-enquete-cnps.png" x="0" y="0" width="1000" height="1160"/>
+  </svg>
+
+  <rect y="1470" width="250" height="18" fill="#24549a"/>
+  <rect x="250" y="1470" width="250" height="18" fill="#e88900"/>
+  <rect x="500" y="1470" width="250" height="18" fill="#008d49"/>
+  <rect x="750" y="1470" width="250" height="18" fill="#ffdc00"/>
+  <text x="500" y="1540" fill="#52636e" font-family="Arial, Helvetica, sans-serif" font-size="24" text-anchor="middle">LA CNPS, MAINTENANT C’EST POUR TOUT LE MONDE</text>
+</svg>
