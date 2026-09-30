@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102f48">
+<title>Télécharger l’affiche PDF — Enquête CNPS</title>
+<style>
+:root{font-family:Arial,Helvetica,sans-serif;color:#20313a;background:#f1f5f2;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+main{width:min(100%,520px);padding:28px;background:#fff;border:1px solid #d9e3df;border-top:5px solid #e57935;border-radius:8px;box-shadow:0 16px 44px rgba(16,47,72,.12);text-align:center}
+h1{margin:0 0 8px;color:#102f48;font-size:24px}
+p{margin:0 0 20px;color:#64747a;font-size:15px;line-height:1.5}
+img{display:block;width:min(100%,250px);height:auto;margin:0 auto 22px;border:1px solid #d9e3df;border-radius:4px}
+button{width:100%;min-height:52px;padding:13px 18px;border:0;border-radius:4px;background:#e57935;color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+button:hover{background:#c65d27}
+button:focus-visible{outline:3px solid rgba(229,121,53,.4);outline-offset:3px}
+button:disabled{opacity:.65;cursor:wait}
+#status{min-height:22px;margin:12px 0 0;font-size:13px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Affiche QR code CNPS</h1>
+  <p>Affiche A4 prête à imprimer ou à partager.</p>
+  <img id="poster" src="affiche-enquete-cnps.svg" alt="Aperçu de l’affiche de l’enquête avec son QR code">
+  <button id="download" type="button">Télécharger le PDF</button>
+  <p id="status" role="status" aria-live="polite"></p>
+</main>
+<script>
+const poster = document.getElementById('poster');
+const button = document.getElementById('download');
+const status = document.getElementById('status');
+const encoder = new TextEncoder();
+
+function makePdf(jpeg, imageWidth, imageHeight) {
+  const pageWidth = 595.28;
+  const pageHeight = 841.89;
+  const drawWidth = pageHeight * imageWidth / imageHeight;
+  const left = (pageWidth - drawWidth) / 2;
+  const chunks = [];
+  const offsets = new Array(6).fill(0);
+  let length = 0;
+
+  function write(value) {
+    const bytes = typeof value === 'string' ? encoder.encode(value) : value;
+    chunks.push(bytes);
+    length += bytes.length;
+  }
+
+  function object(id, body) {
+    offsets[id] = length;
+    write(`${id} 0 obj\n${body}\nendobj\n`);
+  }
+
+  write('%PDF-1.4\n');
+  object(1, '<< /Type /Catalog /Pages 2 0 R >>');
+  object(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+  object(3, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Poster 4 0 R >> >> /Contents 5 0 R >>`);
+
+  offsets[4] = length;
+  write(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imageWidth} /Height ${imageHeight} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`);
+  write(jpeg);
+  write('\nendstream\nendobj\n');
+
+  const drawing = `q\n${drawWidth} 0 0 ${pageHeight} ${left} 0 cm\n/Poster Do\nQ`;
+  const drawingBytes = encoder.encode(drawing);
+  offsets[5] = length;
+  write(`5 0 obj\n<< /Length ${drawingBytes.length} >>\nstream\n${drawing}\nendstream\nendobj\n`);
+
+  const xrefOffset = length;
+  write('xref\n0 6\n0000000000 65535 f \n');
+  for (let id = 1; id <= 5; id += 1) {
+    write(`${String(offsets[id]).padStart(10, '0')} 00000 n \n`);
+  }
+  write(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`);
+  return new Blob(chunks, {type: 'application/pdf'});
+}
+
+button.addEventListener('click', async () => {
+  button.disabled = true;
+  status.textContent = 'Préparation du PDF…';
+  try {
+    await poster.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = 2000;
+    canvas.height = 3200;
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(poster, 0, 0, canvas.width, canvas.height);
+
+    const encoded = canvas.toDataURL('image/jpeg', 0.98).split(',')[1];
+    const binary = atob(encoded);
+    const jpeg = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) jpeg[index] = binary.charCodeAt(index);
+
+    const url = URL.createObjectURL(makePdf(jpeg, canvas.width, canvas.height));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'affiche-enquete-cnps.pdf';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    status.textContent = 'Le téléchargement du PDF a commencé.';
+  } catch (error) {
+    status.textContent = 'Le PDF n’a pas pu être créé. Rechargez la page et réessayez.';
+  } finally {
+    button.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
